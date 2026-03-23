@@ -61,7 +61,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "L4GA API V1");
+        c.RoutePrefix = string.Empty; // Esto hace que Swagger cargue en la raíz!
+    });
 }
 
 app.UseHttpsRedirection();
