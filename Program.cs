@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // IMPORTANTE: UseCors debe ir después de HttpsRedirection y antes de Authorization
 app.UseCors("AllowAngularApp");
