@@ -16,39 +16,33 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-// 2. Configuración de CORS para Angular (Local + Producción)
+// 2. Configuración de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
     policy =>
     {
         policy.WithOrigins(
-                "http://localhost:4200",                     // Tu entorno de VS Code
-                "https://l4ga-frontend.azurestaticapps.net"  // URL asignada por Azure
+                "http://localhost:4200",
+                "https://salmon-sky-0c876580f.1.azurestaticapps.net" // <--- SIN la barra "/" al final
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
 
-// 3. Configuración de Controladores con manejo de Ciclos
+// 3. Configuración de Controladores
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Vital para el reporte de Nóminas y Transportes
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
 // 4. Inyección de Dependencias
-// Usuarios
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-
-// Transporte
 builder.Services.AddScoped<ITransporteRepository, TransporteRepository>();
 builder.Services.AddScoped<ITransporteService, TransporteService>();
-
-// Nóminas
 builder.Services.AddScoped<INominaRepository, NominaRepository>();
 builder.Services.AddScoped<INominaService, NominaService>();
 
@@ -57,24 +51,28 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configuración del pipeline de solicitudes HTTP
+// --- CONFIGURACIÓN DEL PIPELINE (EL ORDEN IMPORTA) ---
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "L4GA API V1");
-        c.RoutePrefix = string.Empty; // Esto hace que Swagger cargue en la raíz!
+        c.RoutePrefix = string.Empty;
     });
 }
 
-//app.UseHttpsRedirection();
+// 1. Ruteo (Primero)
+app.UseRouting();
 
-// IMPORTANTE: UseCors debe ir después de HttpsRedirection y antes de Authorization
+// 2. CORS (Después de Routing, antes de Auth)
 app.UseCors("AllowAngularApp");
 
+// 3. Autorización
 app.UseAuthorization();
 
+// 4. Mapeo de Controladores
 app.MapControllers();
 
 app.Run();
