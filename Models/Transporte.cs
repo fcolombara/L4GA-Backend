@@ -1,4 +1,6 @@
-﻿namespace L4GA.Models
+﻿using System.Text.Json.Serialization;
+
+namespace L4GA.Models
 {
     public class Transporte
     {
@@ -8,6 +10,8 @@
         public string Cisterna { get; set; } = string.Empty; // Patente/Matrícula del acoplado
         public string AnioTracto { get; set; } = string.Empty;
         public string AnioCisterna { get; set; } = string.Empty;
+
+        [JsonIgnore]
         public List<Nomina> Nominas { get; set; } = new List<Nomina>();
     }
 }
