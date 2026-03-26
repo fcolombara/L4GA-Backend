@@ -40,5 +40,25 @@ namespace L4GA.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task<bool> UpdateAsync(Transporte transporte)
+        {
+            // Verificamos si la entidad existe en la base de datos
+            var existe = await _context.Transportes.AnyAsync(t => t.Id == transporte.Id);
+            if (!existe) return false;
+
+            // Marcamos la entidad como modificada para que EF genere el UPDATE
+            _context.Transportes.Update(transporte);
+
+            try
+            {
+                // Guardamos cambios (esto actualizará Chofer, Tracto, Cisterna y el nuevo Contacto)
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+        }
     }
 }

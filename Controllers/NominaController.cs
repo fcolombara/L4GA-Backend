@@ -18,9 +18,14 @@ namespace L4GA.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Nomina>>> GetNominas()
+        public async Task<ActionResult<IEnumerable<Nomina>>> GetNominas(
+    [FromQuery] DateTime? inicioCarga,
+    [FromQuery] DateTime? finCarga,
+    [FromQuery] DateTime? inicioActividad,
+    [FromQuery] DateTime? finActividad)
         {
-            var nominas = await _nominaService.ListarNominasAsync();
+            // Pasamos los 4 parámetros al servicio
+            var nominas = await _nominaService.ListarNominasAsync(inicioCarga, finCarga, inicioActividad, finActividad);
             return Ok(nominas);
         }
 

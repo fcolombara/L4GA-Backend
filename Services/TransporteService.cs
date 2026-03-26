@@ -29,6 +29,16 @@ namespace L4GA.Backend.Services
             return await _repo.AddAsync(transporte);
         }
 
+        public async Task<bool> ActualizarTransporteAsync(Transporte transporte)
+        {
+            // Asegurate de que el Repo o Context esté haciendo el Update
+            // Si usas Entity Framework:
+            // _context.Entry(transporte).State = EntityState.Modified;
+            // await _context.SaveChangesAsync();
+
+            return await _repo.UpdateAsync(transporte);
+        }
+
         public async Task<bool> EliminarTransporteAsync(int id)
         {
             return await _repo.DeleteAsync(id);

@@ -1,6 +1,7 @@
 ﻿using L4GA.Backend.Interfaces;
 using L4GA.Interfaces;
 using L4GA.Models;
+using L4GA.Repositories;
 
 namespace L4GA.Backend.Services
 {
@@ -16,6 +17,12 @@ namespace L4GA.Backend.Services
         public async Task<IEnumerable<Nomina>> ListarNominasAsync()
         {
             return await _repo.GetAllAsync();
+        }
+
+        public async Task<IEnumerable<Nomina>> ListarNominasAsync(DateTime? inicioCarga, DateTime? finCarga, DateTime? inicioActividad, DateTime? finActividad)
+        {
+            // Simplemente se los pasamos al repositorio, que es el que habla con la DB
+            return await _repo.GetFilteredAsync(inicioCarga, finCarga, inicioActividad, finActividad);
         }
 
         public async Task<Nomina> CrearNominaAsync(NominaCreateDto dto)

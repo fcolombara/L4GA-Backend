@@ -8,5 +8,7 @@ namespace L4GA.Backend.Interfaces
         Task<Transporte?> ObtenerPorIdAsync(int id);
         Task<Transporte> RegistrarTransporteAsync(Transporte transporte);
         Task<bool> EliminarTransporteAsync(int id);
+
+        Task<bool> ActualizarTransporteAsync(Transporte transporte);
     }
 }

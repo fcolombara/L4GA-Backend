@@ -7,6 +7,7 @@ namespace L4GA.Interfaces
         Task<IEnumerable<Transporte>> GetAllAsync();
         Task<Transporte?> GetByIdAsync(int id);
         Task<Transporte> AddAsync(Transporte transporte);
+        Task<bool> UpdateAsync(Transporte transporte); // <--- AGREGAR ESTO
         Task<bool> DeleteAsync(int id);
     }
 }

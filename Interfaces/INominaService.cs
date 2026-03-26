@@ -9,5 +9,6 @@ namespace L4GA.Backend.Interfaces
 
         // Agregamos este nuevo método:
         Task<bool> ActualizarTrackingAsync(int id, string link);
+        Task<IEnumerable<Nomina>> ListarNominasAsync(DateTime? inicioCarga, DateTime? finCarga, DateTime? inicioActividad, DateTime? finActividad);
     }
 }

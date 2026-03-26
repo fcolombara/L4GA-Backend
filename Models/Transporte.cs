@@ -11,6 +11,8 @@ namespace L4GA.Models
         public string AnioTracto { get; set; } = string.Empty;
         public string AnioCisterna { get; set; } = string.Empty;
 
+        public string? Contacto { get; set; } 
+
         [JsonIgnore]
         public List<Nomina> Nominas { get; set; } = new List<Nomina>();
     }

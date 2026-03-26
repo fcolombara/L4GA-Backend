@@ -36,6 +36,25 @@ namespace L4GA.Controllers
 
             return Ok(transporte);
         }
+        // PUT: api/Transporte/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTransporte(int id, Transporte transporte)
+        {
+            if (id != transporte.Id)
+            {
+                return BadRequest(new { message = "El ID no coincide con el transporte enviado" });
+            }
+
+            // Llamamos al servicio para actualizar (incluyendo el nuevo campo Contacto)
+            var actualizado = await _transporteService.ActualizarTransporteAsync(transporte);
+
+            if (!actualizado)
+            {
+                return NotFound(new { message = "No se pudo actualizar: el transporte no existe" });
+            }
+
+            return NoContent(); // 204: Éxito pero no devuelve contenido (estándar para PUT)
+        }
 
         // POST: api/Transporte
         [HttpPost]
@@ -60,4 +79,6 @@ namespace L4GA.Controllers
             return NoContent();
         }
     }
+
+
 }
