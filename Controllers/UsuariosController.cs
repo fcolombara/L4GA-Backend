@@ -104,7 +104,7 @@ namespace L4GA.Backend.Controllers
 
         public class RolUpdateDto
         {
-            public string NuevoRol { get; set; } = string.Empty;
+            public string NuevoRol { get; set; }
         }
     }
 }

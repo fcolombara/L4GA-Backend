@@ -45,6 +45,8 @@ builder.Services.AddScoped<ITransporteRepository, TransporteRepository>();
 builder.Services.AddScoped<ITransporteService, TransporteService>();
 builder.Services.AddScoped<INominaRepository, NominaRepository>();
 builder.Services.AddScoped<INominaService, NominaService>();
+builder.Services.AddScoped<IOperacionRepository, OperacionRepository>();
+builder.Services.AddScoped<IOperacionService, OperacionService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

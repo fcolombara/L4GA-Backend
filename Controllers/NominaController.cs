@@ -1,7 +1,9 @@
 ﻿using L4GA.Backend.Interfaces;
+using L4GA.Backend.Models;
 using L4GA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace L4GA.Controllers
 {
@@ -9,6 +11,7 @@ namespace L4GA.Controllers
     [ApiController]
     public class NominaController : ControllerBase
     {
+       
         private readonly INominaService _nominaService;
 
         public NominaController(INominaService nominaService)
@@ -54,5 +57,6 @@ namespace L4GA.Controllers
 
             return NoContent();
         }
+       
     }
 }
