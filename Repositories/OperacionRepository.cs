@@ -16,7 +16,6 @@ namespace L4GA.Backend.Repositories
 
         public async Task<IEnumerable<Operacion>> GetAllAsync()
         {
-            // Usamos Include para traer los datos del Transporte (Patente, Chofer, etc.)
             return await _context.Operaciones
                 .Include(o => o.Transporte)
                 .OrderByDescending(o => o.Fecha)
@@ -28,22 +27,6 @@ namespace L4GA.Backend.Repositories
             return await _context.Operaciones
                 .Include(o => o.Transporte)
                 .FirstOrDefaultAsync(o => o.Id == id);
-        }
-        public async Task<IEnumerable<Operacion>> GetPendientesSalidaGreenAsync()
-        {
-            return await _context.Operaciones
-                .Include(o => o.Transporte)
-                // FILTRO CLAVE: Entró pero no salió
-                .Where(o => o.LitrosInGreen > 0 && (o.LitrosOutGreen == 0 || o.LitrosOutGreen == null))
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Operacion>> GetPendientesPuertoAsync()
-        {
-            return await _context.Operaciones
-                .Include(o => o.Transporte)
-                // Condición: Ya salió de Green (LitrosOut > 0) pero no entró al puerto (HoraIn == null)
-                .Where(o => o.LitrosOutGreen > 0 && o.HoraInPuerto == null)
-                .ToListAsync();
         }
 
         public async Task<IEnumerable<Operacion>> GetByTransporteIdAsync(int transporteId)
@@ -74,6 +57,22 @@ namespace L4GA.Backend.Repositories
                 _context.Operaciones.Remove(operacion);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Operacion>> GetPendientesSalidaGreenAsync()
+        {
+            return await _context.Operaciones
+                .Include(o => o.Transporte)
+                .Where(o => o.VolDescargadoGreen > 0 && (o.VolCargadoGreen == 0 || o.VolCargadoGreen == null))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Operacion>> GetPendientesPuertoAsync()
+        {
+            return await _context.Operaciones
+                .Include(o => o.Transporte)
+                .Where(o => o.VolCargadoGreen > 0 && o.HoraArriboPuerto == null)
+                .ToListAsync();
         }
     }
 }

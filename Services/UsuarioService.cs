@@ -18,7 +18,7 @@ namespace L4GA.Backend.Services
             // --- MEJORA: Aseguramos que el Rol nunca sea nulo al guardar ---
             if (string.IsNullOrWhiteSpace(usuario.Rol))
             {
-                usuario.Rol = "Visor";
+                usuario.Rol = "Consulta";
             }
 
             usuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuario.PasswordHash);
@@ -51,14 +51,27 @@ namespace L4GA.Backend.Services
             var usuario = await _repo.GetByIdAsync(id);
             if (usuario == null) return false;
 
-            var rolesValidos = new[] { "Admin", "Operario", "Visor", "Baja" };
-            if (!rolesValidos.Contains(nuevoRol)) return false;
+            // 1. Limpiamos cualquier espacio o salto de línea que venga del front
+            var rolRecibido = nuevoRol?.Trim();
 
-            usuario.Rol = nuevoRol;
+            // 2. Usamos una lista clara y comparamos ignorando mayúsculas/minúsculas
+            var rolesValidos = new List<string> { "Admin", "Operador", "Operario", "Consulta", "Baja" };
+
+            bool esValido = rolesValidos.Any(r => string.Equals(r, rolRecibido, StringComparison.OrdinalIgnoreCase));
+
+            if (!esValido)
+            {
+                // Esto saldrá en la consola de Visual Studio para que veas qué está llegando exactamente
+                Console.WriteLine($" ERROR: El rol '{rolRecibido}' no coincide con nada en la lista permitida.");
+                return false;
+            }
+
+            // 3. Si es válido, asignamos el valor de la lista para asegurar consistencia
+            usuario.Rol = rolesValidos.First(r => string.Equals(r, rolRecibido, StringComparison.OrdinalIgnoreCase));
+
             await _repo.UpdateAsync(usuario);
             return true;
         }
-
         public async Task<bool> EliminarUsuario(int id)
         {
             var usuario = await _repo.GetByIdAsync(id);
@@ -68,4 +81,5 @@ namespace L4GA.Backend.Services
             return true;
         }
     }
-}
+    
+    }

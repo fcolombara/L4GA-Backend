@@ -15,7 +15,7 @@ namespace L4GA.Backend.Interfaces
         Task<IEnumerable<Operacion>> ListarPorTransporteAsync(int transporteId);
 
         Task<IEnumerable<Operacion>> ListarPendientesGreenAsync();
-
+        Task ActualizarTracking(int id, string link);
         Task<IEnumerable<Operacion>> ObtenerPendientesSalidaGreenAsync();
         Task<IEnumerable<Operacion>> GetPendientesPuertoAsync();
     }

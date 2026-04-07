@@ -20,6 +20,6 @@ namespace L4GA.Backend.Models
 
         // Aquí definimos el Rol (Admin, Operario, etc.)
         [Required]
-        public string Rol { get; set; } = "Visor";
+        public string Rol { get; set; } = "Consulta";
     }
 }

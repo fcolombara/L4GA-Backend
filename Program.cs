@@ -47,6 +47,8 @@ builder.Services.AddScoped<INominaRepository, NominaRepository>();
 builder.Services.AddScoped<INominaService, NominaService>();
 builder.Services.AddScoped<IOperacionRepository, OperacionRepository>();
 builder.Services.AddScoped<IOperacionService, OperacionService>();
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
